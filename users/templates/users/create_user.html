@@ -1,0 +1,21 @@
+<!-- <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пользователя</title>
+</head>
+<body>
+    <h1>Добавить пользователя</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Создать пользователя</button>
+    </form>
+    <a href="{% url 'users' %}">Назад к списку пользователей</a>
+</body>
+</html> -->
+<form method="post" id="userForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Создать пользователя</button>
+</form>

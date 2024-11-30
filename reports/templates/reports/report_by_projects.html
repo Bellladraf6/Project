@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Отчет по проектам{% endblock %}
+
+{% block content %}
+<h1>Отчет по проектам</h1>
+
+<form method="get">
+    <input type="text" name="search" id="search" placeholder="Введите название проекта" value="{{ search_query }}">
+
+    <label for="sort_by_kpi">Сортировка по KPI:</label>
+    <select name="sort_by_kpi" id="sort_by_kpi">
+        <option value="">По умолчанию</option>
+        <option value="asc" {% if sort_by_kpi == "asc" %}selected{% endif %}>По возрастанию</option>
+        <option value="desc" {% if sort_by_kpi == "desc" %}selected{% endif %}>По убыванию</option>
+    </select>
+
+    <button type="submit">Найти</button>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Проект</th>
+            <th>Общее количество задач</th>
+            <th>Количество завершенных задач</th>
+            <th>Процент выполнения</th>
+            <th>Средний KPI</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in page_obj %}
+            <tr>
+                <td>{{ project.name }}</td>
+                <td>{{ project.total_tasks }}</td>
+                <td>{{ project.completed_tasks }}</td>
+                <td>{{ project.completion_percentage|floatformat:2 }}%</td>
+                <td>{{ project.average_kpi|floatformat:2 }}%</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">Нет данных</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Пагинация -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}&sort_by_kpi={{ sort_by_kpi }}&sort_by_task_count={{ sort_by_task_count }}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for page_num in page_obj.paginator.page_range %}
+            {% if page_num == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}{% if search_query %}&search={{ search_query }}{% endif %}&sort_by_kpi={{ sort_by_kpi }}&sort_by_task_count={{ sort_by_task_count }}">{{ page_num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}&sort_by_kpi={{ sort_by_kpi }}&sort_by_task_count={{ sort_by_task_count }}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link">Next</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчеты</title>
+</head>
+<body>
+        <nav>
+            <ul>
+                {% if request.user.role == 'Администратор' %}
+                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    <li><a href="{% url 'users' %}">Пользователи</a></li>
+                    <li><a href="{% url 'projects' %}">Проекты</a></li>
+                    <li><a href="{% url 'tasks' %}">Задачи</a></li>
+                    <li><a href="{% url 'reports' %}">Отчеты</a></li>
+                {% elif request.user.role == 'Разработчик' %}
+                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    <li><a href="{% url 'projects' %}">Проекты</a></li>
+                    <li><a href="{% url 'tasks' %}">Мои Задачи</a></li>
+                    <li><a href="{% url 'reports' %}">Отчеты</a></li>
+                {% endif %}
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+            </ul>
+        </nav>
+    <h1>Отчеты</h1>
+    <ul>
+        <li><a href="{% url 'report_by_executors' %}">Отчет по исполнителям</a></li>
+        <li><a href="{% url 'report_by_tasks' %}">Отчет по задачам</a></li>
+        <li><a href="{% url 'report_by_projects' %}">Отчет по проектам</a></li>
+    </ul>
+    <a href="{% url 'home' %}">На главную</a>
+</body>
+</html>

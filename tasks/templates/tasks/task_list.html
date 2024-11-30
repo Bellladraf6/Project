@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Список задач{% endblock %}
+
+{% block content %}
+
+<!-- Форма поиска и фильтрации -->
+<form method="get">
+    <input
+        type="text"
+        name="q"
+        placeholder="{% if request.user.role == 'Администратор' %}Поиск по названию задачи, проекту или исполнителю{% else %}Поиск по названию задачи или проекту{% endif %}"
+        value="{{ query }}"
+    >
+    <label for="status">Фильтр по статусу:</label>
+    <select name="status" id="status">
+        <option value="">Все статусы</option>
+        <option value="Новая" {% if status_filter == 'Новая' %}selected{% endif %}>Новая</option>
+        <option value="Выполняется" {% if status_filter == 'Выполняется' %}selected{% endif %}>Выполняется</option>
+        <option value="Завершена" {% if status_filter == 'Завершена' %}selected{% endif %}>Завершена</option>
+    </select>
+    <button type="submit">Найти</button>
+</form>
+
+<!-- Кнопка для отчета и добавления задач -->
+<a href="{% url 'report_by_tasks' %}">Отчет по задачам</a>
+{% if request.user.role == 'Администратор' %}
+    <button type="button" class="btn btn-primary" id="addTaskButton">Добавить задачу</button>
+{% endif %}
+
+<!-- Включение таблицы -->
+<div id="taskTable">
+    {% include 'tasks/task_table.html' %}
+</div>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">Добавить задачу</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body" id="taskModalBody">
+                Загрузка...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

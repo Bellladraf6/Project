@@ -1,0 +1,5 @@
+<form method="post" id="taskForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Создать задачу</button>
+</form>

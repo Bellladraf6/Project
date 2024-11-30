@@ -1,0 +1,79 @@
+<!-- Таблица с пользователями -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in page_obj %}
+        <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                <a href="{% url 'edit_user' user.id %}">Редактировать</a> |
+                <button
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                    data-item-name="{{ user.first_name }} {{ user.last_name }}"
+                    data-delete-url="{% url 'delete_user' user.id %}"
+                >
+                    Удалить
+                </button>
+
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Нет данных для отображения</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Пагинация -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <!-- Кнопка "Previous" -->
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+        {% endif %}
+
+        <!-- Номера страниц -->
+        {% for page_num in page_obj.paginator.page_range %}
+            {% if page_num == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}{% if query %}&q={{ query }}{% endif %}">{{ page_num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Кнопка "Next" -->
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link">Next</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

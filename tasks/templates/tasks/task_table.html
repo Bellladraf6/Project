@@ -1,0 +1,90 @@
+<!-- Таблица задач -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Проект</th>
+            {% if request.user.role == 'Администратор' %}
+                <th>Исполнитель</th>
+            {% endif %}
+            <th>Дедлайн</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in page_obj %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.project.name }}</td>
+            {% if request.user.role == 'Администратор' %}
+                <td>{{ task.executor.first_name }} {{ task.executor.last_name }}</td>
+            {% endif %}
+            <td>{{ task.deadline|default:"-" }}</td>
+            <td>{{ task.status }}</td>
+            <td>
+                {% if request.user.role == 'Администратор' %}
+                    <a href="{% url 'edit_task' task.id %}">Редактировать</a> |
+                    <button
+                        class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
+                        data-item-id="{{ task.id }}"
+                        data-item-name="{{ task.title }}"
+                        data-delete-url="{% url 'delete_task' task.id %}"
+                    >
+                        Удалить
+                    </button>
+                {% elif request.user.role == 'Разработчик' %}
+                    {% if task.status == 'Новая' %}
+                        <a href="{% url 'start_task' task.id %}">Начать</a>
+                    {% elif task.status == 'Выполняется' %}
+                        <a href="{% url 'complete_task' task.id %}">Завершить</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Нет задач.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Пагинация -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}&status={{ status_filter }}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for page_num in page_obj.paginator.page_range %}
+            {% if page_num == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}{% if query %}&q={{ query }}{% endif %}&status={{ status_filter }}">{{ page_num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}&status={{ status_filter }}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link">Next</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
