@@ -1,13 +1,22 @@
-btn.btn-outline-primary {
-    color: white; /* Цвет текста */
-    background-color: #4c51bf; /* Indigo-400 */
-    border-color: #4c51bf; /* Цвет границы */
-    font-size: 1.25rem; /* Размер шрифта */
-    padding: 0.5rem 1.5rem; /* Отступы */
-    border-radius: 0.5rem; /* Скругление углов */
+.nav-link {
+    color: rgb(0 0 0 / 45%);
+    font-size: 1.05rem; /* Размер шрифта */
 }
 
-.btn-outline-primary:hover {
-    background-color: #3b42a3; /* Тёмный оттенок при наведении */
-    border-color: #3b42a3;
+.nav-link:hover {
+    color: rgb(0 0 0 / 60%);
+}
+
+.navbar-nav .nav-link.active {    
+    color: #5227CC !important; /* Фиолетовый цвет для активной страницы */
+}
+
+.btn-outline-primary {
+    border-color: #7749F8; /* Цвет границы */
+    color: #7749F8;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:focus-visible  {
+    background-color: #623ec6 !important; /* Тёмный оттенок при наведении */
+    border-color: #623ec6 !important;
 }

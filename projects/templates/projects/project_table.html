@@ -17,7 +17,13 @@
                 <a href="{% url 'tasks' %}?project_id={{ project.id }}" class="btn btn-primary btn-sm">Задачи</a>
                 {% if request.user.role == 'Администратор' %}
                     <!-- Действия только для администратора -->
-                    <a href="{% url 'edit_project' project.id %}" class="btn btn-secondary btn-sm">Редактировать</a>
+                    <button 
+                        class="btn btn-primary edit-project-btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editModal" 
+                        data-edit-url="{% url 'edit_project' project.id %}">
+                        Редактировать
+                    </button>
                     <button
                         class="btn btn-danger btn-sm"
                         data-bs-toggle="modal"
@@ -40,7 +46,7 @@
 
 <!-- Пагинация -->
 <nav aria-label="Page navigation example">
-    <ul class="pagination">
+    <ul class="pagination pagination-sm">
         {% if page_obj.has_previous %}
             <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a>

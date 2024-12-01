@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from .models import PasswordHistory
 from django.db.models import Q  # Импортируем Q для сложных фильтров
 from django.core.paginator import Paginator  # Необходимо для работы пагинации
+from django.template.loader import render_to_string
 
 # Представление для входа в систему
 def login_view(request):
@@ -59,7 +60,7 @@ def admin_only(view_func):
 @admin_only  # Применяем декоратор, чтобы ограничить доступ для администраторов
 def user_list_view(request):
     query = request.GET.get('q', '')
-    users = User.objects.all()
+    users = User.objects.all().order_by('id')
     
     if query:
         users = users.filter(
@@ -70,7 +71,7 @@ def user_list_view(request):
         )
     
     # Добавляем пагинацию: 10 пользователей на страницу
-    paginator = Paginator(users, 10)
+    paginator = Paginator(users, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -104,16 +105,17 @@ def create_user_view(request):
 @admin_only
 def edit_user_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
+
     if request.method == 'POST':
         form = UserForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Пользователь успешно обновлен.')
-            return redirect('users')
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'html': render(request, 'users/edit_user.html', {'form': form}).content.decode('utf-8')})
     else:
         form = UserForm(instance=user)
-    return render(request, 'users/edit_user.html', {'form': form, 'user': user})
-
+        return render(request, 'users/edit_user.html', {'form': form})
 
 @login_required
 @admin_only

@@ -1,18 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const editButtons = document.querySelectorAll('.edit-user-btn');
+    const editButtons = document.querySelectorAll('.edit-task-btn');
 
     editButtons.forEach(button => {
         button.addEventListener('click', function () {
             const url = button.getAttribute('data-edit-url'); // Используем data-edit-url
             const modalBody = document.getElementById('modal-body-content');
 
-            // Загружаем форму редактирования
+            // Загружаем форму редактирования через AJAX
             fetch(url)
                 .then(response => response.text())
                 .then(html => {
                     modalBody.innerHTML = html; // Вставляем HTML формы в модальное окно
 
-                    const form = modalBody.querySelector('#edit-user-form');
+                    const form = modalBody.querySelector('#edit-task-form');
                     form.addEventListener('submit', function (e) {
                         e.preventDefault();
 
@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 if (data.success) {
                                     const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
                                     modal.hide();
-                                    location.reload();
+                                    location.reload(); // Обновляем страницу
                                 } else {
-                                    modalBody.innerHTML = data.html; // Отобразить ошибки
+                                    modalBody.innerHTML = data.html; // Показываем ошибки
                                 }
                             })
                             .catch(error => console.error('Error:', error));

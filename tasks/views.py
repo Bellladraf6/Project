@@ -111,26 +111,20 @@ def create_task_view(request):
 @admin_only
 def edit_task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
-    if request.method == "POST":
+    if request.method == 'POST':
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            messages.success(request, "Задача успешно обновлена.")
-            return redirect("tasks")
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'html': render(request, 'tasks/edit_task.html', {'form': form}).content.decode('utf-8')})
     else:
         form = TaskForm(instance=task)
-    return render(request, "tasks/edit_task.html", {"form": form, "task": task})
+        return render(request, 'tasks/edit_task.html', {'form': form})
 
 
 @login_required
 @admin_only
-# def delete_task_view(request, task_id):
-#     task = get_object_or_404(Task, id=task_id)
-#     if request.method == "POST":
-#         task.delete()
-#         messages.success(request, "Задача успешно удалена.")
-#         return redirect("tasks")
-#     return render(request, "tasks/delete_task.html", {"task": task})
 def delete_task_view(request, task_id):
     if request.method == "POST":
         task = get_object_or_404(Task, id=task_id)

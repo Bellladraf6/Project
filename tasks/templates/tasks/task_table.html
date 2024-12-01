@@ -24,7 +24,13 @@
             <td>{{ task.status }}</td>
             <td>
                 {% if request.user.role == 'Администратор' %}
-                    <a href="{% url 'edit_task' task.id %}">Редактировать</a> |
+                    <button 
+                        class="btn btn-primary edit-task-btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editModal" 
+                        data-edit-url="{% url 'edit_task' task.id %}">
+                        Редактировать
+                    </button> |
                     <button
                         class="btn btn-danger btn-sm"
                         data-bs-toggle="modal"
@@ -54,7 +60,7 @@
 
 <!-- Пагинация -->
 <nav aria-label="Page navigation example">
-    <ul class="pagination">
+    <ul class="pagination pagination-sm">
         {% if page_obj.has_previous %}
             <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}&status={{ status_filter }}">Previous</a>

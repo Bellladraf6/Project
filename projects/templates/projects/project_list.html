@@ -4,17 +4,23 @@
 
 {% block content %}
 
-<!-- Поисковая форма -->
-<form method="get" action="">
-    <input type="text" name="q" placeholder="Поиск по названию проекта" value="{{ query }}">
-    <button type="submit">Найти</button>
-</form> 
 
-<!-- Кнопка для добавления проекта (доступна только администратору) -->
-{% if request.user.role == 'Администратор' %}
-    <a href="{% url 'report_by_projects' %}">Отчет по проектам</a>
-    <button type="button" class="btn btn-primary" id="addProjectButton">Добавить проект</button>
-{% endif %}
+<div class="container mt-60"> 
+    <!-- Поисковая форма и кнопки --> 
+    <h1>Список проектов</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4"> 
+        <form method="get" action="" class="d-flex flex-grow-1 me-3"> 
+            <input type="text" name="q" placeholder="Поиск" value="{{ query }}" class="form-control w-50"> 
+            <button type="submit" class="btn btn-outline-secondary ms-2">Найти</button> 
+        </form> 
+        <div class="d-flex"> 
+            {% if request.user.role == 'Администратор' %}
+                <a href="{% url 'report_by_projects' %}" class="btn btn-outline-secondary me-2">Отчет по проектам</a> 
+                <button type="button" class="btn btn-primary" id="addProjectButton">Добавить</button> 
+            {% endif %}    
+        </div> 
+    </div> 
+
 
 <!-- Включение таблицы -->
 <div id="projectTableContainer">

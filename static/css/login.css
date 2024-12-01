@@ -1,57 +1,41 @@
-.login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
+
+/* Фон страницы */
+body {
+    background: #f8f9fa; 
 }
 
-h1 {
-    text-align: center;
-    color: #333;
+/* Карточка авторизации */
+.card {    
+    border-radius: 15px; 
+    background: #ffffff; 
+
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+/* Заголовок */
+h2.text-primary {    
+    color: #333!important;
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+/* Поля ввода */
+.form-control {    
+    border: 1px solid #ccc !important;
+    background-color: #f9f9f9 !important;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.d-grid {
+    margin-top: 2rem !important;
+}
+/* Кнопка */
+.btn-primary {
+    background: #7749F8 !important; 
+    border-color: #7749F8 !important; 
+    
+}
+.btn-primary:hover{    
+    background: #3a1c99 !important;
+    border-color: #3a1c99 !important;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
-
-.error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    display: none;
-}
-
-#error-email, #error-password, #general-error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
+.text-danger-margin {
+    margin: -15px auto 0;
 }

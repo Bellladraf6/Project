@@ -1,0 +1,32 @@
+.mt-60 {
+    margin-top: 60px;
+}
+
+/* Кнопка */
+.btn-primary {
+    background: #7749F8 !important; 
+    border-color: #7749F8 !important; 
+    
+}
+.btn-primary:hover{    
+    background: #623ec6 !important;
+    border-color: #623ec6 !important;
+}
+
+.form-control:focus {
+    border-color: #7849f89d;
+    box-shadow: 0 0 0 .25rem rgba(109, 29, 196, 0.10)
+}
+
+.active>.page-link, .page-link.active {
+    background-color: #7749F8;
+    border-color: #7849f89d;
+}
+
+h1 {
+    margin-bottom: 60px;
+}
+
+.page-link {
+    color: #7749F8;
+}

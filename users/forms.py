@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .models import User  # Это, если модель User находится в models.py текущего приложения
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, min_length=8, max_length=128)
+    password = forms.CharField(widget=forms.PasswordInput, required=False, min_length=8, max_length=128)
 
     class Meta:
         model = User  # Предполагается использование модели User
@@ -41,9 +41,17 @@ class UserForm(forms.ModelForm):
 
         return password
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        user_id = self.instance.id
+        if User.objects.filter(email=email).exclude(id=user_id).exists():
+            raise ValidationError('Пользователь с таким email уже существует.')
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])  # Сохраняем пароль в зашифрованном виде
+        if self.cleaned_data['password']:  # Обновляем пароль, только если он указан
+            user.set_password(self.cleaned_data['password'])
         if commit:
             user.save()
         return user

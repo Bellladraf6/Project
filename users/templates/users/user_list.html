@@ -1,43 +1,46 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
+ 
+{% block title %}Список пользователей{% endblock %} 
+ 
+{% block content %} 
+ 
 
-{% block title %}Список пользователей{% endblock %}
-
-{% block content %}
-
-<a href="{% url 'report_by_executors' %}">Отчет по исполнителям</a>
-
-<!-- Поисковая форма -->
-<form method="get" action="">
-    <input type="text" name="q" placeholder="Поиск" value="{{ query }}">
-    <button type="submit">Найти</button>
-</form>
-
-<!-- Кнопка для добавления пользователя -->
-<!-- <a href="{% url 'create_user' %}">Добавить пользователя</a> -->
-<button type="button" class="btn btn-primary" id="addUserButton">Добавить пользователя</button>
-
-<!-- Область для таблицы пользователей -->
-<div id="userTable">
-    {% include 'users/user_table.html' %}
-</div>
-
-
-    <!-- Модальное окно -->
-    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userModalLabel">Добавить пользователя</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                </div>
-                <div class="modal-body" id="modalBody">
-                    Загрузка...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<div class="container mt-60"> 
+    <!-- Поисковая форма и кнопки --> 
+    <h1>Список пользователей</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4"> 
+        <form method="get" action="" class="d-flex flex-grow-1 me-3"> 
+            <input type="text" name="q" placeholder="Поиск" value="{{ query }}" class="form-control w-50"> 
+            <button type="submit" class="btn btn-outline-secondary ms-2">Найти</button> 
+        </form> 
+        <div class="d-flex"> 
+            <a href="{% url 'report_by_executors' %}" class="btn btn-outline-secondary me-2">Отчет по исполнителям</a> 
+            <button type="button" class="btn btn-primary" id="addUserButton">Добавить</button> 
+        </div> 
+    </div> 
+ 
+    <!-- Область для таблицы пользователей --> 
+    <div id="userTable" class="table-responsive"> 
+        {% include 'users/user_table.html' %} 
+    </div> 
+</div> 
+ 
+<!-- Модальное окно для создания пользователя --> 
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true"> 
+    <div class="modal-dialog"> 
+        <div class="modal-content"> 
+            <div class="modal-header"> 
+                <h5 class="modal-title" id="userModalLabel">Создание нового пользователя</h5> 
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button> 
+            </div> 
+            <div class="modal-body" id="modalBody"> 
+                Загрузка... 
+            </div> 
+            <div class="modal-footer"> 
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+ 
 {% endblock %}

@@ -1,23 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Редактировать задачу</title>
-</head>
-<body>
-    <h1>Редактировать задачу</h1>
-
-    <!-- Навигация -->
-    <nav>
-        <ul>
-            <li><a href="{% url 'tasks' %}">Назад к списку задач</a></li>
-        </ul>
-    </nav>
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Сохранить изменения</button>
-    </form>
-</body>
-</html>
+<form method="post" id="edit-task-form"> 
+    {% csrf_token %} 
+    {{ form.as_p }} 
+    <button type="submit" class="btn btn-primary">Сохранить</button> 
+</form>

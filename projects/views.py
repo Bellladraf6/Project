@@ -58,17 +58,16 @@ def create_project_view(request):
 @admin_only  # Ограничение доступа для редактирования проекта
 def edit_project_view(request, project_id):
     project = get_object_or_404(Project, id=project_id)
-    if request.method == "POST":
+    if request.method == 'POST':
         form = ProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            messages.success(request, "Проект успешно обновлен.")
-            return redirect("projects")
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'html': render(request, 'projects/edit_project.html', {'form': form}).content.decode('utf-8')})
     else:
         form = ProjectForm(instance=project)
-    return render(
-        request, "projects/edit_project.html", {"form": form, "project": project}
-    )
+        return render(request, 'projects/edit_project.html', {'form': form})
 
 
 @login_required
